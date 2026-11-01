@@ -1,0 +1,9 @@
+{
+  "name": "skill-5-level-nine",
+  "private": true,
+  "description": "Render + audit harness for the Level Nine mobile design skill. Uses your installed Chrome.",
+  "type": "module",
+  "dependencies": {
+    "playwright-core": "^1.55.0"
+  }
+}
