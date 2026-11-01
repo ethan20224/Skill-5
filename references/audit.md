@@ -9,17 +9,23 @@ the loop, the defect catalog, the critique protocol and the stop rule.
 ## 1. The loop (every round)
 
 1. **Render every state** as its own screen on one page (a state sheet) with
-   `data-screen="moment-name"` on each phone screen.
+   `data-screen="moment-name"` on each phone screen, and its role in
+   `data-role` (home, detail, input, entry, transition, celebration,
+   utility; home is the default).
 2. **Run the audit:**
    ```bash
    node ~/.claude/skills/skill-5/scripts/audit.mjs mockup.html --out audit/r1
    ```
    Fix every FAIL. Answer every WARN (fix it, or one line on why it is
-   deliberate, e.g. "10 px tab labels: iOS standard").
+   deliberate, e.g. "10 px tab labels: iOS standard"). Check every declared
+   role against what the screen actually does: a status screen marked
+   `entry` to escape the dead-band check is a defect, and so is a
+   `data-space` reason that fails the fill test.
 3. **Open every PNG at full size**, one by one, not only the sheet. Look for
    what no script sees: a drawing that does not read, a weak line, a hero that
    does not change between moments, crowding, rhythm breaks, anything that
-   looks "AI".
+   looks "AI". Judge each screen at its role (anatomy.md §6), and the flow's
+   pacing as a whole.
 4. **Score** the nine pillars (levels.md procedure), apply caps.
 5. **Compare** with an anchor and write where it loses.
 6. **Climb:** make the change with the most points per hour, render into a new
@@ -57,11 +63,18 @@ entrances to finish (≥ 1 s) or take the shot twice.
 
 If you can spawn one agent, spawn **one** critic for the whole job. Brief it:
 - the concept, the moments and hero objects, the default refused
-- the nine pillars and caps from SKILL.md §2, and levels.md
+- each screen's role, volume and job, in flow order (anatomy.md §6)
+- the nine pillars and caps from SKILL.md §2, and levels.md (including
+  "Reading intent")
 - the PNG paths (each screen, plus the sheet) and the anchor images (`examples/r3-*-L9.png`)
-- the instruction: "Score each pillar 0 / 0.5 / 1 with one line of evidence.
-  Apply caps. Name the single biggest blocker. Be harder than feels fair. Do
-  not suggest new features; judge what is there."
+- the instruction: "Name each screen's role first, then score each pillar
+  0 / 0.5 / 1 in that role's version, with one line of evidence. Run the
+  intent check on every flaw before you list it. Apply caps exactly; a role
+  or an intent never lifts one. Name the single
+  biggest blocker. Be harder than feels fair on execution and function;
+  never mark down a deliberate choice that does its job, and never excuse a
+  function failure as intent. Do not suggest new features; judge what is
+  there."
 
 Wait for its scores before editing. Without an agent, score yourself, then
 subtract 1 from any pillar you scored without opening the PNG.
@@ -88,6 +101,7 @@ Moments → heroes
 - <moment>: <hero object> (encodes <what>)
 - …
 Default refused: <category default>
+Roles: <screen>: <role · volume> … · rhythm: <one line on the flow's pacing>
 
 | Pillar | r1 | rN | Evidence |
 |---|---|---|---|

@@ -126,21 +126,90 @@ delete it. Respect reduced motion: spatial motion becomes a cross-fade.
 
 ---
 
-## 6. Screen types
+## 6. Screen roles
 
-| Screen | Where the level comes from | Notes |
-|---|---|---|
-| **Core / home** | Hero object per moment, full skeleton | The whole method applies |
-| **Detail** | The hero zoomed in (the jar's ruler, the route's stations), deeper data | Same ground and hand; push navigation |
-| **Onboarding** | One idea per screen, a hero for the promise, short copy, progress | Vary composition between screens; skip always available; never a rating prompt |
-| **Paywall** | Show the product working (a widget preview, the hero in a paid state), the plan, the trial timeline (today → reminder → charge) | Honest pricing; restore purchase; no dark patterns |
-| **Empty / first run** | The hero in its empty state (an empty jar with a painted line), one action that fills it | Says exactly how to fill it |
-| **List / feed** | Rhythm, typography, a leading glyph or thumbnail with one crop logic | No hero; quality comes from P4–P6 and P9 |
-| **Settings / forms** | Native controls, grouped rows, perfect states | No illustrations. Same ground, type, radius and accent |
-| **Chat / assistant** | A material presence (the orb) for idle/thinking/speaking, suggestion chips, composer | The presence encodes state |
-| **Map / navigation** | Time and distance remaining as the display moment, map as the hero | CarPlay-grade legibility |
-| **Player / recorder** | An instrument hero (reel, meter, keys) | Hardware buttons with clear pressed states |
-| **Celebration / share** | The artifact (a stamp, a receipt, a postcard) the user would post | Distribution lives here |
+Everything above (the §1 skeleton, "hero 30–50%, no dead band") is written
+for the **home / status** screen, the one people open to see where things
+stand. Most screens in an app do a different job. A sign-in screen is a
+pause before a decision; a loading screen is a beat of motion; a list is a
+tool. Design and judge each screen *at its job*, never against the home
+screen's checklist.
 
-Every screen type still answers: what is the one thing to see first, what is
-the one action, and does it look like the same app?
+Before you design, critique or score a screen, write one line:
+**role · volume · its one job** ("Entry · calm · get them signed in").
+
+### Roles
+
+| Role | Volume | Examples | Owes | Does not owe |
+|---|---|---|---|---|
+| **Home / status** | Loud | The core screen and its moments, a dashboard, an assistant at rest | Everything in §1 and SKILL.md §2: a hero that carries state, the full skeleton, no dead band | — |
+| **Detail** | Loud hero, quiet support | A fund's holdings, a plant's history, the jar's ruler | The zoomed hero or chart leads; supporting lists, legends and footnotes sit quiet and tidy below it | A rich or decorated list |
+| **Input / setup** | Medium | Relay setup, a new budget, an alarm, filters, a profile form | The instrument is the hero (a tick ruler, a dial) or the fields are perfectly ordered; one primary action pinned low, in thumb reach | Filling the space above a pinned action |
+| **Entry / decision** | Calm | Sign-in, an onboarding promise, a paywall, a confirm, a permission | One promise, one action, composed space around one focal object | A tab bar, a stat row, a hero that tracks live state |
+| **Transition** | Loud in feeling, light in information | Loading, importing, processing, sending, matching | Motion that shows what is happening (screenshots sweeping into a stack); one legible line saying what is happening; a way out if it can take long | Legibility of content shown as texture; a tab bar |
+| **Celebration / share** | Loud | A completion, a receipt, a stamp, a year in review | The artifact someone would post | UI around it beyond one or two actions |
+| **Utility** | Quiet | Lists, feeds, settings, search | Rhythm, typographic hierarchy, native controls, perfect states | A hero; filling the space below short content (a list ends where its content ends) |
+
+Fine print (footnotes, legal, disclosures) is a *part* of a screen, not a
+role: the quietest thing on it, small and grey on purpose. It owes
+legibility (≥ 11 pt, ≥ 4.5:1) and a place where people expect it, nothing
+more.
+
+**Volume is not quality.** A quiet screen is held to the same 9 as a loud
+one; it earns it through precision instead of spectacle.
+
+### Every pillar, per role (never skipped, always earned)
+
+A pillar is never "not applicable". Each role has its own version, as hard
+to earn as the home-screen one. Score = 1 + sum, caps unchanged.
+
+| Pillar | Home / status | Detail · Input | Entry · Transition · Celebration | Utility |
+|---|---|---|---|---|
+| **P1** Picture holds the data | The hero encodes the state (SKILL.md §2) | The chart or instrument *is* the data or the value: a radial chart of holdings, a tick ruler at 217 | The picture or motion carries the promise or the process: files sweeping into a stack *is* "importing"; the card that has arrived *is* the news | The content is the picture: type, thumbnails or glyphs with one crop logic, scannable in a second |
+| **P2** Coverage → composed space | Hero 30–50%, no *dead* band > 15% (levels.md, "dead vs active") | The hero leads; the rest packs as one unit; the gap above a pinned action is layout, not leftover | Every empty area has a job you can name: it frames the focal object, it is the pause before the decision, it is the mood | Rows on a steady rhythm; groups never stretched or split; space below short content is fine |
+| **P4** Skeleton → one system | The full §1 skeleton | The same system (ground logic, type, radius scale, accent role, icon family, spacing) plus navigation chrome (back, title) | The same system; chrome that fits the place: no tab bar on sign-in or loading, progress on onboarding | The same system; native chrome and controls |
+| **P7** Moment-aware | Changes with time, state, place | Reflects the current data and selection | Knows where the person is in the flow: first run or return, step 2 of 4, how long the wait is | Empty, loading, error and full states each composed |
+| **P8** Signature interaction | One per app or flow, living where it means most | The input feels physical (detents and a haptic on the ruler) | The motion *is* the experience (transition); a satisfying commit (entry, celebration) | Press states and native feel |
+
+P3 (one drawing hand), P5 (one first read), P6 (human copy) and P9 (zero
+defects) read the same in every role.
+
+A screen never loses P8 because the signature lives elsewhere in the flow;
+it loses it when it breaks the app's interaction language. Judging a still
+of a motion screen (a transition, an assistant's presence)? Say so, and
+judge the motion only as far as the still shows it.
+
+### Flow rhythm
+
+When there are several screens of one app, line them up in flow order with
+their role and volume, and read them as a sequence, not a pile:
+
+- **Peaks need valleys.** A loud screen lands because a quiet one came
+  before it. Every screen at full volume is a flaw ("no rest"); every
+  screen quiet is a flaw ("no peak").
+- **One signature per flow,** at the moment it means most. Do not spread
+  small gimmicks across every screen.
+- **The system never changes:** ground logic, type, radius scale, accent
+  role, icon family, spacing, motion language. Only the *volume* changes.
+- **Each screen does its part.** Hero objects live where people look for
+  status; calm lives where people decide; motion lives where people wait.
+
+### Screen types
+
+| Screen | Role | Where the level comes from | Notes |
+|---|---|---|---|
+| **Core / home** | Home | Hero object per moment, full skeleton | The whole method applies |
+| **Detail** | Detail | The hero zoomed in (the jar's ruler, the route's stations), deeper data | Same ground and hand; push navigation |
+| **Onboarding / sign-in** | Entry | One idea per screen, a hero for the promise, short copy, progress | Vary composition between screens; skip always available; never a rating prompt |
+| **Paywall** | Entry | Show the product working (a widget preview, the hero in a paid state), the plan, the trial timeline (today → reminder → charge) | Honest pricing; restore purchase; no dark patterns |
+| **Loading / processing** | Transition | Motion that shows what is happening, one status line, an estimate or a way out | A beat, not a destination; keep it short |
+| **Empty / first run** | Home (empty state) | The hero in its empty state (an empty jar with a painted line), one action that fills it | Says exactly how to fill it |
+| **List / feed** | Utility | Rhythm, typography, a leading glyph or thumbnail with one crop logic | No illustrated hero; P1 is the content itself |
+| **Settings / forms** | Utility · Input | Native controls, grouped rows, perfect states | No illustrations. Same ground, type, radius and accent |
+| **Chat / assistant** | Home | A material presence (the orb) for idle/thinking/speaking, suggestion chips, composer | The presence encodes state; the calm field around it is part of the hero |
+| **Map / navigation** | Home | Time and distance remaining as the display moment, map as the hero | CarPlay-grade legibility |
+| **Player / recorder** | Home · Input | An instrument hero (reel, meter, keys) | Hardware buttons with clear pressed states |
+| **Celebration / share** | Celebration | The artifact (a stamp, a receipt, a postcard) the user would post | Distribution lives here |
+
+Every screen still answers: what is its role, what is the one thing to see
+first, what is the one action, and does it look like the same app?

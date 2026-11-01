@@ -76,10 +76,16 @@ node ~/.claude/skills/skill-5/scripts/audit.mjs path/to/mockup.html --out audit/
 
 Each pillar scores 0, 0.5 or 1. Score = 1 + the sum, then caps apply.
 
+Role first: every screen is judged at its job (home, detail, input, entry,
+transition, celebration, utility). The pillars below are worded for the home
+screen; each role has its own version of every pillar, never skipped, and
+every flaw must pass an intent check (taste can be deliberate, function
+never is).
+
 1. **The picture holds the data** (hide the numbers: can you still read the state?)
-2. **Coverage**: the hero fills 30–50% of the screen, no empty bands
+2. **Coverage**: the hero fills 30–50% of the screen, no dead bands (space with a job is not dead)
 3. **One drawing style, with character**
-4. **A shared skeleton with real chrome**: status bar, meta row, hero, headline, three stats, one primary action, tab bar
+4. **One system with real chrome**: on home screens, status bar, meta row, hero, headline, three stats, one primary action, tab bar
 5. **Typographic nuance**: one display moment, small units and decimals, tabular figures
 6. **Human, specific copy**
 7. **Moment-awareness**: the screen changes with the user's moment

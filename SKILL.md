@@ -65,12 +65,20 @@ vacuum.
 
 Score each pillar **0, 0.5 or 1**. **Score = 1 + sum** (max 10). Then apply caps.
 
+**Role first.** The wording below is for the home / status screen. Every
+screen first gets a **role · volume · job** (home, detail, input, entry,
+transition, celebration, utility: [references/anatomy.md](references/anatomy.md) §6),
+and each role has its own version of every pillar: never skipped, always
+earned. Before any flaw counts, it must pass the intent check
+([references/levels.md](references/levels.md), "Reading intent"): taste
+choices can be deliberate, function failures never are.
+
 | # | Pillar | 1 point when… | The test |
 |---|---|---|---|
 | P1 | **The picture holds the data** | The core screen's hero picture encodes the current state: a jar filled to the money left, a clock wedge of minutes left, a train with *your* door lit | **Delete-the-numbers test:** hide every number. Can you still read the state from the picture? |
-| P2 | **Coverage** | The hero takes 30–50% of the screen, often bleeds off an edge; no empty band over ~15% of the height | **Dead-space audit:** find the largest empty horizontal band. The picture should *be* the space |
+| P2 | **Coverage** | The hero takes 30–50% of the screen, often bleeds off an edge; no *dead* band over ~15% of the height (space left over, not space that frames the hero) | **Dead-space audit:** find the largest empty horizontal band. On a status screen the picture should *be* the space; anywhere else, run the fill test (levels.md) |
 | P3 | **One drawing hand, with character** | All art in one style built from the ground's own tones; bold silhouettes plus a detail pass (people, lettering on objects, secondary motion) | Could one illustrator have drawn every picture in the app? Is there one detail per scene that rewards a second look? |
-| P4 | **System skeleton + real chrome** | Every screen shares one anatomy: status bar (clock matching the content), meta line + round button, hero, headline, 3-stat row, one primary pill + one text action, tab bar | Line the screens up: do they read as one shipped app, not posters? |
+| P4 | **System skeleton + real chrome** | Every screen is one system (ground logic, type, radius scale, accent role, icon family, spacing) with real chrome. Home screens share one anatomy: status bar (clock matching the content), meta line + round button, hero, headline, 3-stat row, one primary pill + one text action, tab bar. Other roles get the chrome that fits their place | Line the screens up: do they read as one shipped app, not posters? |
 | P5 | **Typographic nuance** | One giant display moment ≥2.5× body; small units and decimals (`€137.60`, `6.8 KM`, `25:00`); tabular figures; weights two steps apart; tight display tracking | Is there exactly one thing a person sees first, and nothing competing in between? |
 | P6 | **Human, specific copy** | Words a person would say, with place, time and sense: "650 ml, slowly, until it runs from the drainage hole. Living room, east window." | Would you quote a line of it? |
 | P7 | **Moment-awareness** | The screen changes with the user's moment (time, state, place), showing the one thing needed *now* | What does this screen look like 20 minutes from now? If "the same", P7 is 0 |
@@ -82,7 +90,7 @@ Score each pillar **0, 0.5 or 1**. **Score = 1 + sum** (max 10). Then apply caps
 | Condition | Max score |
 |---|---|
 | Emoji as icons, purple/indigo AI gradient, lorem/placeholder names | **4** |
-| Any audit FAIL (clipped/colliding text, broken control, contrast < 3:1, dead band > 28%) | **6** |
+| Any audit FAIL (clipped/colliding text, broken control, contrast < 3:1, dead band > 28% on a home or detail screen) | **6** |
 | No hero picture on the core screen | **6.5** |
 | Not rendered and inspected (claimed from code) | **7** |
 | Category-default structure (looks like the top 3 apps rearranged) | **7.5** |
@@ -195,7 +203,10 @@ specific, uneven, believable (`€137.60`, `Sat 11`, `1,850 lux`, never `$1,000`
 1. **Skeleton first**, from [references/anatomy.md](references/anatomy.md)
    or `<skill>/assets/template.html` (phone frame, real status bar, meta row,
    hero slot, headline, stat row, action row, tab bar, reset rules that cannot
-   override your buttons, interaction helpers).
+   override your buttons, interaction helpers). That skeleton is for home
+   screens; every other screen starts from its role (anatomy.md §6). For a
+   flow, lay the screens out in order with role and volume, and check the
+   rhythm before drawing.
 2. **Scenes**: draw each hero at full hero size in one drawing hand, using the
    ground's tone ramp (ground, two darker, one lighter, ink). Bleed it.
 3. **Interactions**: build the signature and the press states for real
@@ -214,6 +225,11 @@ cd <skill> && npm i            # once
 node <skill>/scripts/audit.mjs path/to/mockup.html --out path/to/audit/r1
 ```
 
+Mark each screen's role with `data-role="home|detail|input|entry|transition|celebration|utility"`
+(home is the default). On home and detail screens a dead band over 28% is a
+FAIL; on the calm roles it is a WARN you defend in one line, or mark the
+space `data-space="why it is there"` and the report lists it for the critic.
+
 The script screenshots every phone screen (it finds them by `data-screen`,
 `.screen`, or phone shape), freezes motion so shots are crisp, and scans for:
 clipped, off-screen and colliding text; contrast; tiny text; emoji; template
@@ -229,7 +245,8 @@ same discipline in the simulator, including a screen recording of every flow
 
 ### Step 9 — Score, compare, climb
 
-1. Score the nine pillars, apply caps.
+1. Name each screen's role, score the nine pillars in that role's version,
+   run the intent check on every flaw, apply caps.
 2. Put your sheet next to an anchor (`examples/r3-*-L9.png`, the user's
    references) and say where it loses, plainly.
 3. Write the one change that would add the most points, make it, re-render.
@@ -289,7 +306,10 @@ continue the method from Step 3.
 | Never | Instead |
 |---|---|
 | A core screen without a picture that carries the state | A hero object per moment (Step 4) |
-| An empty band in the middle of the screen | Let the hero fill 30–50%; type sits on the scene |
+| A dead band on a status screen (an empty middle between things that belong together) | Let the hero fill 30–50%; type sits on the scene. Space with a job is not dead: run the fill test |
+| Judging every screen against the home screen's checklist | Role first: design and judge each screen at its job (anatomy.md §6) |
+| Every screen in a flow at full volume | Rhythm: quiet screens make loud ones land; one signature per flow |
+| Calling a deliberate choice a flaw (quiet support, calm space, organic layout) | The intent check (levels.md): taste can be deliberate; function never is |
 | A poster in a phone frame | Real chrome: status bar with matching time, meta row, tab bar, primary pill |
 | Pictures as decoration (a sun, a mascot, a stock person) | A picture that changes when the data does |
 | Several drawing styles in one app | One hand, the ground's tones |
@@ -307,15 +327,21 @@ continue the method from Step 3.
 
 ---
 
-## 6. Beyond the core screen
+## 6. Beyond the core screen: every screen has a role
+
+Each screen does a different part of the job, and a flow is paced like a
+sequence: loud where people look for status, calm where they decide, alive
+where they wait, quiet where they work. Roles, the pillars per role and flow
+rhythm are in [references/anatomy.md](references/anatomy.md) §6.
 
 Hero objects belong where a person *looks* for status: the core screen and
 its moments, empty and first-run states, onboarding, paywalls, completions and
 shareable moments. They do not belong on settings, forms, long lists or
-legal screens. There, P4–P6 and P9 carry the level: native controls,
-disciplined rhythm, typographic hierarchy, specific copy, perfect states. A
-settings screen does not need a drawing to be a 9; it needs to be flawless and
-unmistakably part of the same app (same ground, type, radius scale, accent).
+legal screens. There, every pillar takes that role's version: the content is
+the picture, the space is composed, the chrome is native, the states are
+perfect. A settings screen does not need a drawing to be a 9; it needs to be
+flawless and unmistakably part of the same app (same ground, type, radius
+scale, accent).
 
 Navigation, native fidelity, safe areas, dark mode, Dynamic Type and the
 production verification loop are in [references/native.md](references/native.md).
@@ -326,11 +352,11 @@ production verification loop are in [references/native.md](references/native.md)
 
 | File | Read when |
 |---|---|
-| [references/levels.md](references/levels.md) | Before scoring anything. The ladder in depth, anchors, misjudgments |
+| [references/levels.md](references/levels.md) | Before scoring anything. The ladder in depth, anchors, reading intent (dead vs active space, the intent check), misjudgments |
 | [references/case-study.md](references/case-study.md) | Once, before your first design. The 5.5 → 9 climb with screenshots |
 | [references/hero-objects.md](references/hero-objects.md) | Step 3–4. Moments, the three tests, 60+ mappings by category |
 | [references/drawing-hands.md](references/drawing-hands.md) | Step 5 and 7. Ten illustration languages, SVG recipes, the detail pass |
-| [references/anatomy.md](references/anatomy.md) | Step 7. Screen skeleton, spacing, type, colour, chrome, screen types |
+| [references/anatomy.md](references/anatomy.md) | Step 7, and before judging any screen that is not home. Screen skeleton, spacing, type, colour, chrome, screen roles, pillars per role, flow rhythm |
 | [references/interaction.md](references/interaction.md) | Step 5 and 7. Signature interactions with exact code and timings |
 | [references/copy-and-data.md](references/copy-and-data.md) | Step 6. Voice, specificity, numbers, banned phrases |
 | [references/audit.md](references/audit.md) | Step 8–9. Defect catalog, critique protocol, stop rule, report template |

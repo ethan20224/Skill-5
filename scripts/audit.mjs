@@ -18,6 +18,11 @@
  * Mark deliberate exceptions in markup:
  *   data-audit-ignore      skip this element and its subtree (e.g. a transient toast)
  *   data-bleed             text/art is allowed to run off-screen here
+ *   data-role="…"          on a screen: home (default) | detail | input | entry | transition |
+ *                          celebration | utility. A dead band > 28% FAILs on home and detail
+ *                          screens only; on the calm roles it is a WARN to defend
+ *   data-space="why"       an empty region that is there on purpose (calm roles only); the
+ *                          report lists it so the critic can check the reason
  *
  * Writes: <out>/NN-name.png per screen, <out>/sheet.png, <out>/report.md
  * Exit code 1 if any FAIL. WARNs never fail the run, but every WARN must be
@@ -190,6 +195,11 @@ const results = await page.evaluate(() => {
     const findings = [];
     const add = (level, code, msg) => findings.push({ level, code, msg });
     const sBg = rgba(getComputedStyle(scr).backgroundColor) || { r: 255, g: 255, b: 255, a: 1 };
+    // the home-screen rules (hero, no dead band) apply in full only where the screen's job is status
+    const ROLES = ["home", "detail", "input", "entry", "transition", "celebration", "utility"];
+    let role = (scr.getAttribute("data-role") || "home").trim().toLowerCase();
+    if (!ROLES.includes(role)) { add("WARN", "unknown-role", `data-role="${role}" is not one of ${ROLES.join(", ")} — judged as home`); role = "home"; }
+    const strict = role === "home" || role === "detail";
 
     // ---- collect text items (one per element that owns text) ----
     const items = new Map();
@@ -314,14 +324,27 @@ const results = await page.evaluate(() => {
     }
     const top = S.top + S.height * 0.07, bottom = S.bottom - S.height * 0.05;
     const iv = boxes.map((b) => [Math.max(top, b.top), Math.min(bottom, b.bottom)]).filter(([a, b]) => b > a).sort((x, y) => x[0] - y[0]);
-    let cur = top, gap = 0;
-    for (const [a, b] of iv) { if (a > cur) gap = Math.max(gap, a - cur); cur = Math.max(cur, b); }
-    gap = Math.max(gap, bottom - cur);
+    let cur = top, gap = 0, gA = top, gB = top;
+    for (const [a, b] of iv) { if (a - cur > gap) { gap = a - cur; gA = cur; gB = a; } cur = Math.max(cur, b); }
+    if (bottom - cur > gap) { gap = bottom - cur; gA = cur; gB = bottom; }
     const dead = gap / S.height;
-    if (dead > 0.28) add("FAIL", "dead-band", `${Math.round(dead * 100)}% of the screen height is an empty band (pillar 2: the picture should be the space)`);
-    else if (dead > 0.15) add("WARN", "dead-band", `${Math.round(dead * 100)}% of the screen height is an empty band — fill it with the hero, or defend the rest`);
+    // a data-space region covering at least half of the largest band defends it (calm roles only)
+    let space = null;
+    for (const el of scr.querySelectorAll("[data-space]")) {
+      if (ignored(el)) continue;
+      const r = el.getBoundingClientRect(), why = (el.getAttribute("data-space") || "").trim();
+      if (why && gap > 0 && Math.min(r.bottom, gB) - Math.max(r.top, gA) >= 0.5 * gap) { space = why; break; }
+    }
+    const pct = Math.round(dead * 100);
+    if (strict) {
+      const note = space ? " (data-space does not excuse a dead band on a home or detail screen)" : "";
+      if (dead > 0.28) add("FAIL", "dead-band", `${pct}% of the screen height is an empty band (pillar 2: the picture should be the space)${note}`);
+      else if (dead > 0.15) add("WARN", "dead-band", `${pct}% of the screen height is an empty band — fill it with the hero, or defend the rest${note}`);
+    } else if (dead > 0.15 && !space) {
+      add("WARN", "dead-band", `${pct}% of the screen height is an empty band on ${/^[aeiou]/.test(role) ? "an" : "a"} ${role} screen — fine if it has a job (frames the focal object, a pause before the action, space above a pinned button, the end of a short list): run the fill test, then defend it in one line or mark it data-space="why"`);
+    }
     const heroCov = hero / sArea;
-    if (heroCov < 0.12) add("WARN", "no-hero", `largest picture covers ${Math.round(heroCov * 100)}% of the screen (core screens want 30–50%: pillar 1)`);
+    if (strict && heroCov < 0.12) add("WARN", "no-hero", `largest picture covers ${Math.round(heroCov * 100)}% of the screen (${role === "detail" ? "detail screens want the zoomed hero or chart to lead" : "core screens want 30–50%"}: pillar 1)`);
 
     // ---- type scale & families ----
     const tot = sizes.reduce((s, x) => s + x.n, 0);
@@ -368,6 +391,7 @@ const results = await page.evaluate(() => {
     out.push({
       findings,
       metrics: {
+        role, space: space && dead > 0.15 && !strict ? space : null,
         deadBand: Math.round(dead * 100), heroCoverage: Math.round(heroCov * 100), hero: heroDesc,
         typeRatio: +typeRatio.toFixed(1), body, display, families: famList,
         hueFamilies: sigBins.length, palette: [...pal.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8).map(([k]) => k),
@@ -384,12 +408,18 @@ const L = [];
 let fails = 0, warns = 0;
 L.push(`# Level Nine audit`, ``, `- source: ${target}`, `- screens: ${screens.length}`, `- shots: ${OUT}`, ``);
 if (pageErrors.length) { L.push(`## Page errors (fix first)`, ...pageErrors.slice(0, 20).map((e) => `- ${e}`), ``); }
-L.push(`| # | screen | dead band | hero | type ratio | hue families | fonts |`, `|---|---|---|---|---|---|---|`);
+L.push(`| # | screen | role | dead band | hero | type ratio | hue families | fonts |`, `|---|---|---|---|---|---|---|---|`);
 screens.forEach((s, k) => {
   const m = results[k].metrics;
-  L.push(`| ${k + 1} | ${s.name} | ${m.deadBand}% | ${m.heroCoverage}% ${m.hero ? "(" + m.hero + ")" : ""} | ${m.typeRatio}× (${m.body}→${m.display}px) | ${m.hueFamilies} | ${m.families.join(", ")} |`);
+  L.push(`| ${k + 1} | ${s.name} | ${m.role} | ${m.deadBand}% | ${m.heroCoverage}% ${m.hero ? "(" + m.hero + ")" : ""} | ${m.typeRatio}× (${m.body}→${m.display}px) | ${m.hueFamilies} | ${m.families.join(", ")} |`);
 });
 L.push(``);
+const spaces = screens.map((s, k) => [s, results[k].metrics]).filter(([, m]) => m.space);
+if (spaces.length) {
+  L.push(`## Defended space (check each reason with the fill test)`);
+  for (const [s, m] of spaces) L.push(`- ${s.name} (${m.role}): ${m.deadBand}% band — "${m.space}"`);
+  L.push(``);
+}
 screens.forEach((s, k) => {
   const f = results[k].findings;
   const uniq = [...new Map(f.map((x) => [x.level + x.code + x.msg, x])).values()];
@@ -404,7 +434,9 @@ screens.forEach((s, k) => {
 const codes = new Set(results.flatMap((r) => r.findings.map((x) => x.code)));
 L.push(`## What this implies for the score`);
 if (fails) L.push(`- ${fails} FAIL(s): the design is **capped at 6** until they are fixed (a broken screen cannot be a 9).`);
-if (codes.has("dead-band")) L.push(`- Dead bands: pillar 2 (coverage) is at risk — the empty middle is the #1 reason designs stall at 6–7.`);
+if (codes.has("dead-band")) L.push(`- Dead bands: pillar 2 (coverage) is at risk — on a status screen the empty middle is the #1 reason designs stall at 6–7. On calm roles, run the fill test (references/levels.md): space with a job is not dead.`);
+const calm = screens.filter((s, k) => !["home", "detail"].includes(results[k].metrics.role));
+if (calm.length) L.push(`- Calm roles declared (${calm.map((s, k) => s.name).join(", ")}): check each role against what the screen actually does. A status screen marked calm to escape the dead-band check is a defect.`);
 if (codes.has("no-hero")) L.push(`- Small or missing hero picture: pillar 1 (the picture holds the data) is probably at 0 on those screens.`);
 if (codes.has("flat-scale")) L.push(`- Flat type scale: pillar 5 needs one display moment ≥ 2.5× the body size.`);
 if (codes.has("no-status-bar")) L.push(`- No status bar: pillar 4 (real app chrome) — mockups without chrome read as posters.`);

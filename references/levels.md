@@ -64,7 +64,9 @@ the content; a small meta line with a round icon button at top right; one hero
 (picture or giant number) that encodes state; a row of three stats; one
 primary pill plus one text action; a tab bar tinted to the ground; one
 drawing hand per app in the ground's own tones; type with one display moment
-and small units; copy with place and sense; no dead space anywhere.
+and small units; copy with place and sense; no dead space anywhere (space
+left over, not space with a job: see "Reading intent"). All eight are home
+screens; other roles have their own version of each pillar (anatomy.md §6).
 
 **The second anchor (7.5):** a Shinkansen "My Journeys" app. Pale grey,
 a lovely illustration (train, Fuji, cherry blossom, torii), segmented tabs,
@@ -101,11 +103,12 @@ Observed in one such gallery:
 | A tick-ruler slider for relay distance, runners' avatars, three stat tiles | 7 | Instrument input is good; **rocket emoji** in a card and a generic red gradient cap it |
 | Onboarding with emoji inline in the headline, floating tag pills, a blue "Continue" | 5–6 | Emoji in copy, default blue, a metaphor that needs reading |
 | A paywall with two book covers, purple "Yearly / Monthly" toggles, purple Subscribe | 6 | Purple default, no product working on screen |
-| A zodiac list in serif on grey with chevrons | 7 | Typographic taste, but a plain list: P1 and P2 at 0 by design |
-| A plain profile form ("Personalise Profile") | 6.5 | Competent native form; fine for its job, not a hero screen |
+| A zodiac list in serif on grey with chevrons | 7 | Utility role, judged as a list: serif names over mono labels is real typographic taste. Held at 7 by stock chevron rows and faint, tiny mono tab labels (a function miss), not by being a list |
+| A plain profile form ("Personalise Profile") | 6.5 | Input role: native, tidy, one clear Continue; choosing the avatar's shape is a small real idea. Held at 6.5 by execution, not by being a form: three equal-weight fields, small grey helper text, nothing you would remember |
 
 Take from the 9s their *mode* (artifact, instrument, material), never their
-pixels. Name the cap on the weaker ones out loud so you do not inherit it.
+pixels. Name each screen's role, and name the cap on the weaker ones out
+loud so you do not inherit it.
 
 ---
 
@@ -170,16 +173,78 @@ imperfection, motion tuned on hardware, and an idea that changes the category.
 
 ---
 
+## Reading intent (before you call anything a flaw)
+
+A critique that ignores a screen's role marks its best decisions as
+defects. Four real misreads, all from one gallery critique:
+
+| Screen | Flagged as "holding it back" | What was actually there | Rule |
+|---|---|---|---|
+| Fund breakdown (detail): a radial line chart, a serif centre label, a one-row holdings list and a footnote below | "List below is small and plain" | The list is quiet *so that* the chart can lead; a loud list would compete with the hero. The critique's own verdict was "the chart is the hero" | Supporting elements are judged by whether they serve the hero (legible, aligned, quiet), never by whether they impress on their own |
+| Relay setup (input): avatars, three stat tiles, a tick-ruler distance card, a white "Next" pill | "Lower half is empty before the button" | The primary action is pinned low, in thumb reach. The space above it is layout, and it shrinks on smaller phones | The gap above a pinned action is not a dead band. Judge the content block as one unit |
+| Meet Wabi (entry): glass spheres floating above a bold headline, Google and Apple buttons | "Spheres are scattered with no pattern" · "Lots of white space" | The spheres shrink with depth and trail toward the centre sphere: a composition. The air is the "fresh and airy" the verdict praised | Before calling a layout random, find what organises it (depth, flow, orbit, rhythm). On an entry screen, the space is the design |
+| Importing your screenshots (transition): a liquid ground, screenshots sweeping into a tilted stack, a serif headline | "Stack is hard to read" | The stack is motion and texture; the screen's job is to make a wait feel alive. The headline says what is happening | Content shown as texture in a transition is not meant to be read. Only the "what is happening" line owes legibility |
+
+The same critique also caught real flaws on those cards, and they stay
+flaws: a rocket emoji and a generic red-to-dark gradient (Relay); a pale
+"Dive in" pill on blue that must be measured for contrast and tap size
+(Importing). The intent check below is the line between the two lists.
+
+### Dead space vs active space
+
+| | Dead space (a flaw) | Active space (a decision) |
+|---|---|---|
+| **Where** | On a screen whose job is status: between groups that belong together; content pushed to the edges around an empty middle | Around one focal object; before a decision; above a pinned action; below a short list |
+| **What it points at** | Nothing; it is what was left over | The hero, the headline or the action |
+| **The rest of the screen** | Usually generic too | Precise: aligned edges, deliberate scale, clean detail |
+| **Fill test:** put the most likely content in it | The screen gets better (the r1 → r2 climb gained +2 doing exactly this) | The screen gets busier and the idea dies |
+
+The r1 posters in `examples/` are the canonical dead space: type at the
+top, stats at the bottom, ~200 px of nothing between, on a status screen.
+That rule stands. The fill test is how you tell it from calm.
+
+### The intent check (run it on every flaw before you write it down)
+
+1. **Taste or function?**
+   - *Taste* choices can be deliberate: how much space, how quiet a
+     secondary element is, asymmetry and organic placement, texture that is
+     not meant to be read, a restrained palette.
+   - *Function* failures are never excused by intent: text a person needs
+     below 11 pt or below contrast (4.5:1 body, 3:1 large), tap targets
+     under 44 pt, clipped or colliding text, emoji as icons, the AI
+     clichés and every other cap in SKILL.md §2, broken or missing states.
+     "Quiet on purpose" is fine; "unreadable" is a defect. Measure it.
+2. **Name the intent.** In one sentence, what is this choice for, given the
+   screen's role? If it does a nameable job and the rest of the screen is
+   precise, it is a decision, not a flaw.
+3. **Reversal test.** Picture the fix. If it would undo something you
+   listed as good, it is the price of the idea, not a flaw.
+4. **Verdict check.** No flaw may contradict your own one-line verdict.
+   "Fresh and airy" cannot be held back by "lots of white space".
+
+What survives is a real flaw. A deliberate choice executed badly is still
+a flaw, aimed at the execution: "the space works, but the headline sits
+40 px too low to own it."
+
+---
+
 ## How to score (the procedure)
 
 1. Render every state. Open each PNG at full size. Run the audit.
-2. Score P1–P9 (0 / 0.5 / 1), one line of evidence each. Half points are for
-   "present but weak" (a hero that carries state on one screen of five; a
-   detail pass on some scenes).
-3. Score = 1 + sum. Apply the caps (SKILL.md §2).
-4. Place your sheet next to an anchor and write one sentence on where it
-   loses. If you cannot name a loss, you have not looked hard enough.
-5. Write the top three blockers, ranked by points gained per hour.
+2. Name each screen's **role · volume · job** (anatomy.md §6). With
+   several screens, lay them out in flow order and check the rhythm.
+3. Score P1–P9 (0 / 0.5 / 1) in that role's version, one line of evidence
+   each. Half points are for "present but weak" (a hero that carries state
+   on one screen of five; a detail pass on some scenes).
+4. Run the intent check on every flaw before it counts.
+5. Score = 1 + sum. Apply the caps (SKILL.md §2) exactly as written. A
+   role or an intent never lifts a cap: if you name a capped flaw (emoji,
+   an AI gradient, placeholder content, a FAIL-level defect), the cap applies.
+6. Place your sheet next to an anchor and write one sentence on where it
+   loses. There is always a loss to name: a flaw that survived the intent
+   check, or the ceiling of the idea ("a strong sign-in, but the category's
+   layout"). Never relabel a deliberate choice as a flaw to fill the slot.
+7. Write the top three blockers, ranked by points gained per hour.
 
 ## Common misjudgments
 
@@ -190,6 +255,11 @@ imperfection, motion tuned on hardware, and an idea that changes the category.
 | "I added an illustration" | Does it change when the data changes? If not, it is decoration (P1 = 0) |
 | "Four directions, very different" | Same layout and same scenes with new colours are skins (cap 8) |
 | "The code looks right" | Unrendered = cap 7. Real bugs hid in code that looked right (audit.md) |
-| "Minimal is premium" | Minimal without a hero and without detail reads empty, not expensive |
+| "Minimal is premium" | On a home screen, minimal without a hero and without detail reads empty, not expensive. On entry and transition screens, run the fill test |
+| "It's empty, so it's dead" | Dead space is left over; active space has a job. Run the fill test (Reading intent) |
+| "The list under the hero is plain, so it holds the screen back" | Supporting elements are meant to be quiet. Judge them by whether they serve the hero |
+| "It has no hero, so P1 is 0" | Score P1 in the screen's role version (anatomy.md §6). A list's picture is its content |
+| "The card needs two or three flaws" | List the flaws that survive the intent check. If none do, name the ceiling of the idea |
+| "It's intentional, so it's fine" | Intent excuses taste, never function. Measure contrast, size and tap targets anyway |
 | "It matches the top app in the category" | That is the definition of 7 |
 | "One tiny clipped label doesn't matter" | One FAIL caps at 6. Users see it first |
