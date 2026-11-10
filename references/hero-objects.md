@@ -41,6 +41,12 @@ fact, merge them. If the screen looks identical in every moment, P7 is 0.
 Bonus test, **the screenshot test**: would someone screenshot this moment to
 share it? The best heroes double as distribution.
 
+**Run the first two, do not imagine them.** You know what the picture means,
+so your own answer is worthless. The audit writes every screen with its words
+and numbers removed (`blind/notext-NN.png`); a reader who has never seen the
+brief says what the picture tells them (audit.md §3). P1 scores 1 only where
+that reader gets the state roughly right.
+
 ---
 
 ## 3. Seven hero modes
@@ -158,6 +164,8 @@ data and culture.
 | A tiny icon-sized hero | Fails coverage (P2) | 30–50% of the screen; bleed it |
 | Several heroes fighting on one screen | No first read | One hero per screen; supporting art stays small |
 | A hero on settings or long forms | Misplaced richness | Heroes where people look for status (SKILL.md §6) |
+| A hero and a giant number on a library, a feed or a chat | The glance skeleton on a screen with another job; the content is pushed off | Structure from the job (anatomy.md §1): the rows, the items or the messages lead |
+| A drawn scene the code cannot carry | Clean primitives read as clip art and cap the screen at 7–8 | Another mode: a chart, an instrument, type or an artifact reaches 9 in code |
 | A beautiful hero, invisible data | Art for art's sake | Put the number on, in, or next to the object (a ruler on the jar, a marker on the track) |
 
 ---

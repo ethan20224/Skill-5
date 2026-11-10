@@ -45,6 +45,13 @@ What the 9s do:
   When unsure, use a placeholder in brackets or leave it out.
 - **Names:** specific and plausible for the setting (Ines Haraguchi, Marlow
   Grocers, Little Fern Coffee). Never John Doe, Jane Smith, Acme.
+- **The worst case, beside the typical one.** A layout drawn around "Kyoto"
+  breaks on "Shin-Yokohama". For every slot that holds data, know the
+  longest real string and the largest real number, and mark the slot
+  `data-stress="Shin-Yokohama"`: the audit's stress pass swaps it in (and
+  grows every other string by 35%). Draw the empty, loading and error states
+  of the core screen with real words too: "No trips yet. Your next ticket
+  shows up here the moment you book."
 
 ## 3. Labels and actions
 

@@ -5,5 +5,9 @@
   "type": "module",
   "dependencies": {
     "playwright-core": "^1.55.0"
+  },
+  "scripts": {
+    "audit": "node scripts/audit.mjs",
+    "test": "node scripts/selftest.mjs"
   }
 }

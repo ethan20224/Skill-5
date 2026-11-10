@@ -20,9 +20,21 @@ Rules that apply to all of them:
   iOS Safari ignores it, so the visual must carry the moment alone).
 - **Reduced motion:** keep opacity and colour changes, drop movement.
 - **Reset rules must not beat components.** Write resets as
-  `:where(button){ all: unset }` (zero specificity). A `.app button
-  { background: none }` reset silently erased the primary button's fill in a
-  real project, twice.
+  `:where(button){ all: unset; box-sizing: border-box }` (zero specificity;
+  `all: unset` drops `box-sizing` with everything else, and a full-width row
+  with padding then overflows). A `.app button { background: none }` reset
+  silently erased the primary button's fill in a real project, twice.
+- **Mark it so it can be driven.** Put `data-interaction` on the element a
+  finger touches: `hold`, `hold:1100` (milliseconds), `tap`, or `drag:dx,dy`
+  (pixels). The audit's press pass performs it and saves four frames
+  (`interaction-NN-name.png`): before, half way, at the end, released. An
+  interaction that changes nothing on screen is a FAIL. Open the strip: a
+  wipe that garbles a label half way is only visible there.
+- **Every control answers a press.** The audit presses the largest controls
+  on every screen and warns about any that show nothing.
+- **Count the taps.** A custom control for entering a value must not be
+  slower than the system picker or keyboard. Where it is, keep the custom
+  control for the feel and let a tap on the value open the plain one.
 
 ---
 
@@ -50,7 +62,9 @@ btn.addEventListener('pointerdown', () => { btn.classList.add('holding');
   clearTimeout(t); btn.classList.remove('holding'); }));
 ```
 Add `-webkit-touch-callout:none; user-select:none` so a long press does not
-select text. Show a small ring icon in the label so it reads as "hold".
+select text. Show a small ring icon in the label so it reads as "hold". Put
+the **same label** inside `.fill`, in the fill's own text colour: a different
+label wipes in over the first one and the two halves read as nonsense.
 
 ### Reveal on hold (privacy-sensitive codes)
 QR or balance blurred until held: `filter: blur(8px); opacity: .3; transform:

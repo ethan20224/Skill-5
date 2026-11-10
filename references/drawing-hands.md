@@ -196,7 +196,9 @@ children, set `transform-box: fill-box; transform-origin: center;`.
 Do this after the scenes work. For **each** scene, add:
 1. **Life**: people, animals, smoke, birds, passengers in windows, a figure at the marker.
 2. **Lettering on an object**: a station name on a clock face, a car number by a
-   door, a serial on a ticket. Keep it off moving parts and at ≥ 8 px.
+   door, a serial on a ticket. Keep it off moving parts and at ≥ 9 px as
+   rendered: a picture that scales down takes its lettering with it, so
+   size it for the smallest phone.
 3. **One secondary motion**: a ticking second hand, poles whipping past, a
    breathing status dot, tea rows drifting.
 4. **One material or place cue**: a seal, a rubber stamp, Kyoto Tower on the

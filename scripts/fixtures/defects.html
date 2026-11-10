@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Level Nine audit · known mistakes</title>
+<!--
+  One planted mistake per screen, and a few screens that are correct on purpose.
+  scripts/selftest.mjs runs the audit on this file and checks that every mistake is
+  caught and that no correct screen is blamed. The expectations live in selftest.mjs,
+  keyed by data-screen. This file is a test, not a design: never copy from it.
+-->
+<style>
+  :where(*, *::before, *::after) { box-sizing: border-box; }
+  :where(button) { all: unset; cursor: pointer; }
+  :where(p, h1) { margin: 0; }
+  body { margin: 0; padding: 32px; display: flex; flex-wrap: wrap; gap: 32px; background: #cfcfcf; font-family: system-ui, sans-serif; }
+  .screen { position: relative; width: 390px; height: 844px; border-radius: 52px; overflow: hidden; background: #B8321C; color: #FFF1DE; flex-shrink: 0; }
+  .light { background: #F3F1EC; color: #1C1B19; }
+  .clock { position: absolute; top: 18px; left: 40px; font: 600 17px/1 system-ui; }
+  .abs { position: absolute; left: 24px; }
+  .big { position: absolute; left: 24px; top: 520px; font: 800 80px/1 system-ui; }
+  .pic { position: absolute; left: 0; top: 98px; }
+  .pill { position: absolute; left: 24px; right: 24px; bottom: 120px; height: 54px; border-radius: 27px; background: #FFF1DE; color: #4A130B; display: grid; place-items: center; font: 700 16px/1 system-ui; }
+  .light .pill { background: #1C1B19; color: #F3F1EC; }
+  .pill.live { transition: transform 140ms; }
+  .pill.live:active { transform: scale(.95); }
+</style>
+</head>
+<body>
+
+<!-- text laid over a picture that is a sibling, not an ancestor: only the pixels know -->
+<section class="screen" data-screen="text-on-picture">
+  <div class="clock">9:41</div>
+  <svg class="pic" width="390" height="330"><rect width="390" height="330" fill="#FFF1DE"/><circle cx="300" cy="200" r="90" fill="#8E2414"/></svg>
+  <p class="abs" style="top:140px; font-size:15px">Cream words on a cream picture</p>
+  <div class="big">16</div>
+  <button class="pill live">Start</button>
+</section>
+
+<!-- the same layout done right: dark words on the light picture. Nothing to report. -->
+<section class="screen" data-screen="text-on-picture-ok">
+  <div class="clock">9:41</div>
+  <svg class="pic" width="390" height="330"><rect width="390" height="330" fill="#FFF1DE"/><circle cx="300" cy="200" r="90" fill="#8E2414"/></svg>
+  <p class="abs" style="top:140px; font-size:15px; color:#4A130B">Dark words on a cream picture</p>
+  <div class="big">16</div>
+  <button class="pill live">Start</button>
+</section>
+
+<!-- a headline that starts on the ground and runs onto a light shape -->
+<section class="screen" data-screen="text-crosses-picture">
+  <div class="clock">9:41</div>
+  <svg class="pic" width="390" height="330"><rect width="390" height="330" fill="#8E2414"/><rect x="190" width="200" height="330" fill="#FFF1DE"/></svg>
+  <p class="abs" style="top:200px; font: 700 28px/1 system-ui; white-space: nowrap">Leaves from platform 16</p>
+  <div class="big">16</div>
+  <button class="pill live">Start</button>
+</section>
+
+<!-- low contrast on a gradient, where no single background colour exists -->
+<section class="screen" data-screen="gradient-ground">
+  <div class="clock">9:41</div>
+  <div class="abs" style="left:0; top:440px; width:390px; height:50px; background:linear-gradient(#B8321C,#C8422C)"><p style="margin:14px 24px; font-size:15px; color:#C2452E">Hard to read on a gradient</p></div>
+  <div class="big">16</div>
+  <button class="pill live">Start</button>
+</section>
+
+<!-- gradient-filled text that is perfectly readable -->
+<section class="screen light" data-screen="gradient-text-ok">
+  <div class="clock">9:41</div>
+  <p class="abs" style="top:200px; font: 800 44px/1.1 system-ui; background: linear-gradient(#111, #444); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent">Kyoto</p>
+  <div class="big">16</div>
+  <button class="pill live">Start</button>
+</section>
+
+<!-- a label under the 11px floor -->
+<section class="screen" data-screen="small-label">
+  <div class="clock">9:41</div>
+  <p class="abs" style="top:500px; font-size:10.5px">Ten and a half pixels</p>
+  <div class="big">16</div>
+  <button class="pill live">Start</button>
+</section>
+
+<!-- a 10px label is allowed in a tab bar, and only there -->
+<section class="screen" data-screen="tab-label-ok">
+  <div class="clock">9:41</div>
+  <div class="big">16</div>
+  <nav style="position:absolute; left:0; right:0; bottom:0; height:84px; display:flex; background:#8E2414">
+    <button class="live" style="flex:1; display:grid; place-items:center; font-size:10px; height:50px">Today</button>
+    <button class="live" style="flex:1; display:grid; place-items:center; font-size:10px; height:50px">History</button>
+  </nav>
+</section>
+
+<!-- tap targets: 40 × 40 warns, 24 × 24 fails -->
+<section class="screen" data-screen="small-targets">
+  <div class="clock">9:41</div>
+  <button class="abs live" style="top:98px; width:40px; height:40px; border-radius:20px; background:#4A130B" aria-label="More"></button>
+  <button class="abs live" style="top:98px; left:100px; width:24px; height:24px; background:#4A130B" aria-label="Close"></button>
+  <div class="big">16</div>
+  <button class="pill live">Start</button>
+</section>
+
+<!-- controls at native height are fine: 44 wide, 32 tall -->
+<section class="screen" data-screen="native-controls-ok">
+  <div class="clock">9:41</div>
+  <div class="abs" style="top:120px; right:24px; height:36px; padding:2px; border-radius:10px; background:#8E2414; display:grid; grid-template-columns:1fr 1fr 1fr">
+    <button class="live" style="display:grid; place-items:center; font-size:14px; border-radius:8px; background:#4A130B">Day</button>
+    <button class="live" style="display:grid; place-items:center; font-size:14px">Week</button>
+    <button class="live" style="display:grid; place-items:center; font-size:14px">Month</button>
+  </div>
+  <div class="big">16</div>
+  <button class="pill live">Start</button>
+</section>
+
+<!-- lettering inside an illustration: invisible, and too small -->
+<section class="screen" data-screen="lettering">
+  <div class="clock">9:41</div>
+  <svg class="pic" width="390" height="330">
+    <rect width="390" height="330" fill="#FFF1DE"/><circle cx="195" cy="150" r="80" fill="#8E2414"/>
+    <text x="24" y="300" font-size="14" fill="#F5E6D0">Cream lettering on cream</text>
+    <text x="24" y="40" font-size="7" fill="#4A130B">Seven pixel lettering</text>
+  </svg>
+  <div class="big">16</div>
+  <button class="pill live">Start</button>
+</section>
+
+<!-- the "hero" is one flat rectangle -->
+<section class="screen" data-screen="flat-hero">
+  <div class="clock">9:41</div>
+  <svg class="pic" width="390" height="330"><rect width="390" height="330" fill="#8E2414"/></svg>
+  <div class="big">16</div>
+  <button class="pill live">Start</button>
+</section>
+
+<!-- a status screen relabelled "entry", with a reason attached to its empty 60% -->
+<section class="screen" data-screen="relabelled" data-role="entry">
+  <div class="clock">9:41</div>
+  <div class="abs" style="top:70px; font: 800 80px/1 system-ui">16</div>
+  <div data-space="calm before the decision" style="position:absolute; top:180px; left:0; width:390px; height:520px"></div>
+  <button class="pill live">Start</button>
+</section>
+
+<!-- a toast sitting on top of a label -->
+<section class="screen" data-screen="covered-label">
+  <div class="clock">9:41</div>
+  <p class="abs" style="top:300px; font-size:15px">Window 12E, on the right</p>
+  <div style="position:absolute; left:16px; right:16px; top:286px; height:48px; border-radius:16px; background:#33100A; z-index:2"></div>
+  <div class="big">16</div>
+  <button class="pill live">Start</button>
+</section>
+
+<!-- a button that gives nothing back when pressed -->
+<section class="screen" data-screen="no-press-state">
+  <div class="clock">9:41</div>
+  <svg class="pic" width="390" height="330"><rect width="390" height="330" fill="#8E2414"/><circle cx="195" cy="165" r="110" fill="#F2A27A"/><circle cx="195" cy="165" r="60" fill="#4A130B"/></svg>
+  <div class="big">16</div>
+  <button class="pill">Start</button>
+</section>
+
+<!-- an interaction that is described and not built -->
+<section class="screen" data-screen="dead-hold">
+  <div class="clock">9:41</div>
+  <svg class="pic" width="390" height="330"><rect width="390" height="330" fill="#8E2414"/><circle cx="195" cy="165" r="110" fill="#F2A27A"/><circle cx="195" cy="165" r="60" fill="#4A130B"/></svg>
+  <div class="big">16</div>
+  <button class="pill" data-interaction="hold:400">Hold to board</button>
+</section>
+
+<!-- fits as written; breaks when the words get longer -->
+<section class="screen" data-screen="long-content">
+  <div class="clock">9:41</div>
+  <div class="abs" style="top:400px; width:86px"><div style="font-size:12px">Streak</div><div style="font: 800 22px/1.15 system-ui">23 days</div></div>
+  <div class="big">16</div>
+  <button class="pill live">Start</button>
+</section>
+
+<!-- a short stat already on two lines -->
+<section class="screen" data-screen="wrapped-stat">
+  <div class="clock">9:41</div>
+  <div class="abs" style="top:400px; width:70px"><div style="font-size:12px">Speed</div><div style="font: 800 22px/1.15 system-ui">285 km/h</div></div>
+  <div class="big">16</div>
+  <button class="pill live">Start</button>
+</section>
+
+<!-- placed by fixed pixels: fine at 390, off the edge at 375 -->
+<section class="screen" data-screen="fixed-pixels">
+  <div class="clock">9:41</div>
+  <p class="abs" style="top:400px; left:268px; font-size:15px; white-space:nowrap">Leaves in 24 min</p>
+  <div class="big">16</div>
+  <button class="pill live">Start</button>
+</section>
+
+<!-- a fixed-height box that holds two lines, and not a third -->
+<section class="screen" data-screen="fixed-height">
+  <div class="clock">9:41</div>
+  <div class="abs" style="top:400px; width:330px; height:44px; overflow:hidden"><p style="font-size:15px; line-height:1.4">Two more glasses before your 16:00 run. The cold tap is fine.</p></div>
+  <div class="big">16</div>
+  <button class="pill live">Start</button>
+</section>
+
+<!-- a dark variant that moved the ground and forgot the ink -->
+<style>
+  .forgot { background: #F3F1EC; color: #1C1B19; }
+  @media (prefers-color-scheme: dark) { .forgot { background: #151413; } }
+</style>
+<section class="screen forgot" data-screen="dark-forgot-ink">
+  <div class="clock">9:41</div>
+  <p class="abs" style="top:400px; font-size:15px">Readable in light, gone in dark</p>
+  <div class="big">16</div>
+  <button class="pill live" style="background:#8E2414; color:#FFF1DE">Start</button>
+</section>
+
+<!-- a list that scrolls: rows past the fold are not mistakes -->
+<section class="screen light" data-screen="scrolling-list-ok" data-role="utility" data-archetype="list">
+  <div class="clock">9:41</div>
+  <h1 class="abs" style="top:64px; font: 700 34px/1.1 system-ui">Library</h1>
+  <div style="position:absolute; left:0; right:0; top:120px; bottom:0; overflow-y:auto; padding:0 24px">
+    <p style="font-size:17px; line-height:52px; border-bottom:1px solid #D8D6D0">Pride and Prejudice</p><p style="font-size:17px; line-height:52px; border-bottom:1px solid #D8D6D0">Moby-Dick</p>
+    <p style="font-size:17px; line-height:52px; border-bottom:1px solid #D8D6D0">The Great Gatsby</p><p style="font-size:17px; line-height:52px; border-bottom:1px solid #D8D6D0">Middlemarch</p>
+    <p style="font-size:17px; line-height:52px; border-bottom:1px solid #D8D6D0">Jane Eyre</p><p style="font-size:17px; line-height:52px; border-bottom:1px solid #D8D6D0">Anna Karenina</p>
+    <p style="font-size:17px; line-height:52px; border-bottom:1px solid #D8D6D0">Rebecca</p><p style="font-size:17px; line-height:52px; border-bottom:1px solid #D8D6D0">Persuasion</p>
+    <p style="font-size:17px; line-height:52px; border-bottom:1px solid #D8D6D0">Beloved</p><p style="font-size:17px; line-height:52px; border-bottom:1px solid #D8D6D0">Stoner</p>
+    <p style="font-size:17px; line-height:52px; border-bottom:1px solid #D8D6D0">Giovanni's Room</p><p style="font-size:17px; line-height:52px; border-bottom:1px solid #D8D6D0">Mrs Dalloway</p>
+    <p style="font-size:17px; line-height:52px; border-bottom:1px solid #D8D6D0">Wide Sargasso Sea</p><p style="font-size:17px; line-height:52px; border-bottom:1px solid #D8D6D0">The Remains of the Day</p>
+    <p style="font-size:17px; line-height:52px; border-bottom:1px solid #D8D6D0">Housekeeping</p><p style="font-size:17px; line-height:52px; border-bottom:1px solid #D8D6D0">Gilead</p>
+  </div>
+</section>
+
+<!-- a row wider than its list: the trailing words leave the screen sideways, which no scroll explains -->
+<section class="screen light" data-screen="row-too-wide" data-role="utility" data-archetype="list">
+  <div class="clock">9:41</div>
+  <h1 class="abs" style="top:64px; font: 700 34px/1.1 system-ui">Library</h1>
+  <div style="position:absolute; left:0; right:0; top:120px; bottom:0; overflow-y:auto">
+    <div style="display:flex; justify-content:space-between; width:430px; padding:0 24px; font-size:17px; line-height:52px"><span>Moby-Dick</span><span>42 of 135</span></div>
+    <div style="display:flex; justify-content:space-between; width:430px; padding:0 24px; font-size:17px; line-height:52px"><span>Jane Eyre</span><span>Finished</span></div>
+  </div>
+</section>
+
+</body>
+</html>

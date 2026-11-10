@@ -209,11 +209,14 @@ That rule stands. The fill test is how you tell it from calm.
    - *Taste* choices can be deliberate: how much space, how quiet a
      secondary element is, asymmetry and organic placement, texture that is
      not meant to be read, a restrained palette.
-   - *Function* failures are never excused by intent: text a person needs
-     below 11 pt or below contrast (4.5:1 body, 3:1 large), tap targets
-     under 44 pt, clipped or colliding text, emoji as icons, the AI
-     clichés and every other cap in SKILL.md §2, broken or missing states.
-     "Quiet on purpose" is fine; "unreadable" is a defect. Measure it.
+   - *Function* failures are never excused by intent: every line of the
+     Works gate (SKILL.md §2). Text a person needs below 11 px (10 in a tab
+     bar) or below contrast (3:1 for anything read, 4.5:1 wanted for body),
+     hit areas under 44 × 44 (a control 44 wide may sit at native height,
+     32 or more), clipped, colliding or covered text, a layout that breaks
+     on a small phone, emoji as icons, the AI clichés and every other cap in
+     SKILL.md §2, broken or missing states. "Quiet on purpose" is fine;
+     "unreadable" is a defect. Measure it.
 2. **Name the intent.** In one sentence, what is this choice for, given the
    screen's role? If it does a nameable job and the rest of the screen is
    precise, it is a decision, not a flaw.
@@ -230,12 +233,21 @@ a flaw, aimed at the execution: "the space works, but the headline sits
 
 ## How to score (the procedure)
 
-1. Render every state. Open each PNG at full size. Run the audit.
-2. Name each screen's **role · volume · job** (anatomy.md §6). With
-   several screens, lay them out in flow order and check the rhythm.
-3. Score P1–P9 (0 / 0.5 / 1) in that role's version, one line of evidence
-   each. Half points are for "present but weak" (a hero that carries state
-   on one screen of five; a detail pass on some scenes).
+1. Render every state. Open each PNG at full size. **Pass the Works gate
+   first** (SKILL.md §2): the audit in full, every FAIL fixed in every pass,
+   every WARN answered, the blind read compared with what you wrote
+   beforehand. A screen that has not passed is fixed, not scored; a line that
+   was not run caps the score at 8.
+2. Name each screen's **structure** (anatomy.md §1) and **role · volume ·
+   job** (anatomy.md §6). With several screens, lay them out in flow order
+   and check the rhythm. A screen wearing the wrong structure (a library as a
+   glance) loses P4 before anything else is weighed.
+3. Score P1–P9 (0 / 0.5 / 1) in that version, one line of evidence each.
+   Half points are for "present but weak" (a hero that carries state on one
+   screen of five; a detail pass on some scenes). P1 scores 1 on a glance
+   only where the blind reader read the state from the picture with its
+   words removed; your own delete-the-numbers test does not count, because
+   you know the answer.
 4. Run the intent check on every flaw before it counts.
 5. Score = 1 + sum. Apply the caps (SKILL.md §2) exactly as written. A
    role or an intent never lifts a cap: if you name a capped flaw (emoji,
@@ -262,4 +274,8 @@ a flaw, aimed at the execution: "the space works, but the headline sits
 | "The card needs two or three flaws" | List the flaws that survive the intent check. If none do, name the ceiling of the idea |
 | "It's intentional, so it's fine" | Intent excuses taste, never function. Measure contrast, size and tap targets anyway |
 | "It matches the top app in the category" | That is the definition of 7 |
+| "Every pillar scores, so it is a 9" | Not before the Works gate. A 9 that clips on a small phone or that a stranger cannot read is a 6 |
+| "The library needs a hero and a big number too" | It needs to be a list. Structure comes from what the person does there (anatomy.md §1) |
+| "I can read the state from the picture" | You wrote the brief. Only the blind reader's answer counts for P1 |
+| "The audit is clean, so it works" | The audit runs five of six gate lines. The sixth is a stranger reading it |
 | "One tiny clipped label doesn't matter" | One FAIL caps at 6. Users see it first |
